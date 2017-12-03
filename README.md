@@ -24,9 +24,9 @@ To See Files Uploaded in Server-
 
 # FOR STORAGE IN DATABASE
 
-```Schema name - jdbc
+Schema name - jdbc
 Username - root
-Password - empty```
+Password - empty
 
 ```
 MySQL Command - CREATE DATABASE `jdbc`;
