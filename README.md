@@ -24,30 +24,30 @@ To See Files Uploaded in Server-
 
 
 # FOR STORAGE IN DATABASE
+
 Schema name - jdbc
+
 Username - root
+
 Password - empty
-
+```
 MySQL Command - CREATE DATABASE `jdbc`;
-
+```
 # Tables
 
 **USER TABLE
-
-Command-
-
+```
 CREATE TABLE `users` (
   `userid` double NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+```
 **FILES TABLE
-
-Command- 
-
+```
 CREATE TABLE `files` (
   `userid` double NOT NULL,
   `filename` varchar(100) NOT NULL,
   `filepath` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
