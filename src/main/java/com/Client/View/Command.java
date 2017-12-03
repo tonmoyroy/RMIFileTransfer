@@ -13,6 +13,7 @@ public enum Command {
      * second is port number.
      */
     LOGIN,
+    REGISTER,
     /**
      * Leave application.
      */

@@ -49,6 +49,18 @@ public class ParticipantManager {
 		return (Participant) participants.get(id);
 	}
 
+	public long checkParticipant(RMIClient remoteNode, Credentials credentials) {
+		long participantId = 0;
+		Participant newParticipant = new Participant(participantId, credentials.getUsername(),
+				credentials.getPassword(), remoteNode, this);
+		participantId = newParticipant.id;
+		if (participantId != 0) {
+			participants.put(participantId, newParticipant);
+			return participantId;
+		} else
+			return 0;
+	}
+
 	/**
 	 * Removes the specified participant from the conversation. No more messages
 	 * will be sent to that participant.

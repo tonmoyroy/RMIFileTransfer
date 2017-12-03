@@ -90,6 +90,12 @@ public class RMIClientInterpreter implements Runnable {
 					boolean forceUnexport = false;
 					UnicastRemoteObject.unexportObject(myRemoteObj, forceUnexport);
 					break;
+				case REGISTER:
+					lookupServer(cmdLine.getParameter(0));
+					myIdAtServer = server.register(myRemoteObj,
+							new Credentials(cmdLine.getParameter(1), cmdLine.getParameter(2)));
+					System.out.println("Registration Successfull.");
+					break;
 				case LOGIN:
 					lookupServer(cmdLine.getParameter(0));
 					myIdAtServer = server.login(myRemoteObj,

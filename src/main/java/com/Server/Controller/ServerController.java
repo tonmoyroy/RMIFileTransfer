@@ -33,8 +33,15 @@ public class ServerController extends UnicastRemoteObject implements RMIServer {
 	public ServerController() throws RemoteException {
 	}
 
-	public long login(RMIClient remoteNode, Credentials credentials) {
+	public long register(RMIClient remoteNode, Credentials credentials) {
 		long participantId = participantManager.createParticipant(remoteNode, credentials);
+		participantManager.sendConvToParticipant(participantId);
+		System.out.println("NEW USER LOGGED IN");
+		return participantId;
+	}
+
+	public long login(RMIClient remoteNode, Credentials credentials) {
+		long participantId = participantManager.checkParticipant(remoteNode, credentials);
 		participantManager.sendConvToParticipant(participantId);
 		System.out.println("NEW USER LOGGED IN");
 		return participantId;
@@ -55,7 +62,7 @@ public class ServerController extends UnicastRemoteObject implements RMIServer {
 		String filename = f.getName();
 		String filepath = System.getProperty("user.dir");
 
-		DatabaseFileUpload model=null;
+		DatabaseFileUpload model = null;
 		model = new DatabaseFileUpload();
 		OutputStream output = null;
 		boolean status = model.UploadFile(filename, filepath, userid);

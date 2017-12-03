@@ -25,6 +25,19 @@ public interface RMIServer extends Remote {
 	 * @return The id of the joining participant. A participant must use this id for
 	 *         identification in all communication with the server.
 	 */
+	long register(RMIClient remoteNode, Credentials credentials) throws RemoteException;
+	
+	/**
+	 * Makes a existing participant join the conversation.
+	 *
+	 * @param remoteNode
+	 *            The remote endpoint of the joining participant. This is the remote
+	 *            object that will be used to send messages to the participant.
+	 * @param credentials
+	 *            The credentials of the joining participant.
+	 * @return The id of the joining participant. A participant must use this id for
+	 *         identification in all communication with the server.
+	 */
 	long login(RMIClient remoteNode, Credentials credentials) throws RemoteException;
 
 	/**
