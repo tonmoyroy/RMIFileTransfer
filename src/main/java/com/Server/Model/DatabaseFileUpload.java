@@ -23,6 +23,7 @@ public class DatabaseFileUpload {
 			preparedStatement.setString(2, filename);
 			preparedStatement.setString(3, filepath);
 			preparedStatement.executeUpdate();
+			System.out.println("File Uploaded");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,13 +46,11 @@ public class DatabaseFileUpload {
 				String sfilepath = resultSet.getString(3);
 
 				// Display values
-				System.out.print("Cfilename: " + filename);
 				System.out.print("ID: " + id);
 				System.out.print(", Filename: " + sfilename);
 				System.out.println(", Filepath: " + sfilepath);
 				if(sfilename.equals(filename)) {
 					authorized = true;
-					System.out.print(true);
 				}
 			}
 			return authorized;
