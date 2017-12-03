@@ -9,10 +9,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.Common.Credentials;
 import com.Common.RMIClient;
 import com.Common.RMIServer;
+import com.Common.ServerFiles;
 import com.Server.Model.DatabaseFileUpload;
 import com.Server.Model.ParticipantManager;
 
@@ -51,7 +55,8 @@ public class ServerController extends UnicastRemoteObject implements RMIServer {
 		String filename = f.getName();
 		String filepath = System.getProperty("user.dir");
 
-		DatabaseFileUpload model = new DatabaseFileUpload();
+		DatabaseFileUpload model=null;
+		model = new DatabaseFileUpload();
 		OutputStream output = null;
 		boolean status = model.UploadFile(filename, filepath, userid);
 		if (status) {
@@ -87,5 +92,11 @@ public class ServerController extends UnicastRemoteObject implements RMIServer {
 			}
 		}
 		return output;
+	}
+
+	public ArrayList<ServerFiles> showUserFiles(long userid) {
+		DatabaseFileUpload model = null;
+		model = new DatabaseFileUpload();
+		return model.getUserFile(userid);
 	}
 }

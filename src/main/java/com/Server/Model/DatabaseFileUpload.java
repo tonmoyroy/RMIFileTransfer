@@ -1,16 +1,49 @@
 package com.Server.Model;
 
 import java.sql.DriverManager;
+import com.Common.ServerFiles;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DatabaseFileUpload {
+public class DatabaseFileUpload implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
+
+	public ArrayList<ServerFiles> getUserFile(long userid) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://localhost/jdbc?" + "user=root&password=");
+			statement = connect.createStatement();
+			String sql = "SELECT * FROM jdbc.files" + " WHERE userid =" + userid;
+			resultSet = statement.executeQuery(sql);
+
+			ArrayList<ServerFiles> filelist = new ArrayList<ServerFiles>();
+			while (resultSet.next()) {
+				double id = resultSet.getDouble(1);
+				String sfilename = resultSet.getString(2);
+				String sfilepath = resultSet.getString(3);
+
+				ServerFiles user = new ServerFiles(id, sfilename, sfilepath);
+
+				filelist.add(user);
+			}
+			return filelist;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public boolean UploadFile(String filename, String filepath, long userid) {
 		try {
@@ -49,7 +82,7 @@ public class DatabaseFileUpload {
 				System.out.print("ID: " + id);
 				System.out.print(", Filename: " + sfilename);
 				System.out.println(", Filepath: " + sfilepath);
-				if(sfilename.equals(filename)) {
+				if (sfilename.equals(filename)) {
 					authorized = true;
 				}
 			}

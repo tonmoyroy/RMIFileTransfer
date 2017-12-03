@@ -11,11 +11,14 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.Common.Credentials;
 import com.Common.RMIClient;
 import com.Common.RMIServer;
+import com.Common.ServerFiles;
 
 public class RMIClientInterpreter implements Runnable {
 	private static final String PROMPT = "> ";
@@ -112,6 +115,21 @@ public class RMIClientInterpreter implements Runnable {
 							download(server, new File(srcFilename), myIdAtServer);
 							System.out.println("Download Successfull");
 						}
+					}
+					break;
+				case SHOWFILES:
+					ArrayList<ServerFiles> filelist = server.showUserFiles(myIdAtServer);
+					if (filelist == null) {
+						System.out.println("No Files to Show");
+					}
+
+					for (ServerFiles file : filelist) {
+						double id = file.getUserid();
+						String sfilename = file.getFilename();
+						String sfilepath = file.getFilepath();
+
+						// Display values
+						System.out.println("Filename: " + sfilename);
 					}
 					break;
 				default:

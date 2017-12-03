@@ -26,6 +26,10 @@ public enum Command {
      */
     DOWNLOAD,
     /**
+     * IF ALREADY LOGGED IN USER THEN TYPE COMMAND - SHOWFILES to list all the uploaded files 
+     */
+    SHOWFILES,
+    /**
      * No command was specified. This means the entire command line is interpreted as an entry in
      * the conversation, and is sent to all clients.
      */

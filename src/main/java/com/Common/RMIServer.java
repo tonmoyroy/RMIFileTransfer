@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 public interface RMIServer extends Remote {
 	/**
@@ -43,9 +45,10 @@ public interface RMIServer extends Remote {
 	 *            The id of the leaving participant.
 	 */
 	void leaveConversation(long id) throws RemoteException;
-	
+
 	OutputStream getOutputStream(File file, long userid) throws RemoteException;
-	
+
 	InputStream getInputStream(File file, long userid) throws RemoteException;
 
+	ArrayList<ServerFiles> showUserFiles(long userid) throws RemoteException;
 }
