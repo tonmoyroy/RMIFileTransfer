@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.Common.Credentials;
 import com.Common.RMIClient;
 import com.Common.RMIServer;
+import com.Server.Model.DatabaseFileUpload;
 import com.Server.Model.ParticipantManager;
 
 import com.Common.RMIOutputStream;
@@ -41,18 +44,24 @@ public class ServerController extends UnicastRemoteObject implements RMIServer {
 		System.out.println("USER NAME CHANGED");
 	}
 
-	public OutputStream getOutputStream(File f) {
-		System.out.println("Upload file: " + f.getName());
-		try {
-			return new RMIOutputStream(new RMIOutputStreamImpl(new FileOutputStream(f)));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+	public OutputStream getOutputStream(File f, long userid) {
+		String filename = f.getName();
+		String filepath = System.getProperty("user.dir");
+
+		DatabaseFileUpload model = new DatabaseFileUpload();
+		OutputStream output = null;
+		boolean status = model.UploadFile(filename, filepath, userid);
+		if (status) {
+			try {
+				output = new RMIOutputStream(new RMIOutputStreamImpl(new FileOutputStream(f)));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		return output;
 	}
 }

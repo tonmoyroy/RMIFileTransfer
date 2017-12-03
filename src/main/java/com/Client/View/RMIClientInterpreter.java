@@ -25,27 +25,31 @@ public class RMIClientInterpreter implements Runnable {
 	private long myIdAtServer;
 	private boolean receivingCmds = false;
 	final public static int BUF_SIZE = 1024 * 64;
-	
+
 	public RMIClientInterpreter() throws RemoteException {
 		myRemoteObj = new ConsoleOutput();
 	}
 
-	public static void copy(InputStream in, OutputStream out) 
-            throws IOException {
-    	
-    	byte[] b = new byte[BUF_SIZE];
-        int len;
-        while ((len = in.read(b)) >= 0) {
-        	out.write(b, 0, len);
-        }
-        in.close();
-        out.close();
-    }
-	
-	public static void upload(RMIServer server, File src, File dest) throws IOException {
-        copy (new FileInputStream(src), server.getOutputStream(dest));
-    }
-	
+	public static void copy(InputStream in, OutputStream out) throws IOException {
+
+		byte[] b = new byte[BUF_SIZE];
+		int len;
+		while ((len = in.read(b)) >= 0) {
+			out.write(b, 0, len);
+		}
+		in.close();
+		out.close();
+	}
+
+	public static void upload(RMIServer server, File src, long userid) throws IOException {
+		OutputStream status = server.getOutputStream(src, userid);
+		if (status == null) {
+			System.out.println("Error Occured in Uploading File");
+		} else {
+			copy(new FileInputStream(src), status);
+		}
+	}
+
 	/**
 	 * Starts the interpreter. The interpreter will be waiting for user input when
 	 * this method returns. Calling <code>start</code> on an interpreter that is
@@ -86,12 +90,11 @@ public class RMIClientInterpreter implements Runnable {
 					if (myIdAtServer != 0) {
 						String srcFilename = cmdLine.getParameter(0);
 						if (srcFilename != null && srcFilename.length() > 0) {
-							String destFilename = srcFilename;
-							
-							upload(server, new File(srcFilename), new File(destFilename));
+							upload(server, new File(srcFilename), myIdAtServer);
 							System.out.println("Upload Successfull");
 						}
 					}
+					break;
 				default:
 					System.out.println("Invalid User/Command");
 				}

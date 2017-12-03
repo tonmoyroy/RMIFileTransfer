@@ -43,6 +43,6 @@ public interface RMIServer extends Remote {
 	 */
 	void leaveConversation(long id) throws RemoteException;
 	
-	OutputStream getOutputStream(File file) throws RemoteException;
+	OutputStream getOutputStream(File file, long userid) throws RemoteException;
 
 }

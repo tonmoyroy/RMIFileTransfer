@@ -16,7 +16,7 @@ public class RMIFileTransferServer {
 			Naming.rebind(ServerController.SERVER_NAME_IN_REGISTRY, new ServerController());
 			System.out.println("Server is ready...");
 		} catch (RemoteException ex) {
-			System.out.println("Could not start chat server.");
+			System.out.println("Could not start RMI server.");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

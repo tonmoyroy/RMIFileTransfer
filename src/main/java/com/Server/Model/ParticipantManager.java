@@ -6,9 +6,6 @@ import java.util.Map;
 import java.util.Random;
 import com.Common.RMIClient;
 import com.Common.Credentials;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Keeps track of all active participants in the conversation, and is also
