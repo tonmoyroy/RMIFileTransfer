@@ -18,7 +18,8 @@ public class ParticipantManager {
 
 	public long createParticipant(RMIClient remoteNode, Credentials credentials) {
 		long participantId = idGenerator.nextLong();
-		Participant newParticipant = new Participant(participantId, credentials.getUsername(), remoteNode,this);
+		Participant newParticipant = new Participant(participantId, credentials.getUsername(),
+				credentials.getPassword(), remoteNode, this);
 		participants.put(participantId, newParticipant);
 		return participantId;
 	}

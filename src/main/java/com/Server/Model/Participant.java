@@ -1,20 +1,28 @@
 package com.Server.Model;
 
 import java.rmi.RemoteException;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 import com.Common.MessageException;
 import com.Common.RMIClient;
-
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.Statement;
 
 public class Participant {
     private static final String JOIN_MESSAGE = " joined conversation.";
     private static final String LEAVE_MESSAGE = " left conversation.";
     private static final String USERNAME_DELIMETER = ": ";
     private static final String DEFAULT_USERNAME = "anonymous";
+    private static final String DEFAULT_PASSWORD = "";
     private final long id;
     private final RMIClient remoteNode;
     private final ParticipantManager participantMgr;
     private String username;
+    private Connection connect = null;
+	private Statement sqlstatement = null;
+	private PreparedStatement preparedStatement = null;
 
     /**
      * Creates a new instance with the specified username and remote node.
@@ -24,11 +32,26 @@ public class Participant {
      * @param remoteNode The remote endpoint of the newly created instance.
      * @param mgr        The only existing participant manager.
      */
-    public Participant(long id, String username, RMIClient remoteNode, ParticipantManager mgr) {
+    public Participant(long id, String username, String password, RMIClient remoteNode, ParticipantManager mgr) {
         this.id = id;
         this.username = username;
         this.remoteNode = remoteNode;
         this.participantMgr = mgr;
+        
+        try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://localhost/jdbc?" + "user=root&password=");
+			sqlstatement = connect.createStatement();
+
+			preparedStatement = connect.prepareStatement("insert into  jdbc.users values (?, ?, ?)");
+			preparedStatement.setDouble(1, id);
+			preparedStatement.setString(2, username);
+			preparedStatement.setString(3, password);
+			preparedStatement.executeUpdate();
+			System.out.println("User Registered");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -39,7 +62,7 @@ public class Participant {
      * @param mgr        The only existing participant manager.
      */
     public Participant(long id, RMIClient remoteNode, ParticipantManager mgr) {
-        this(id, DEFAULT_USERNAME, remoteNode, mgr);
+        this(id, DEFAULT_USERNAME,DEFAULT_PASSWORD, remoteNode, mgr);
     }
 
     /**
