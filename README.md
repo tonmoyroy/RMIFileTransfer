@@ -10,6 +10,10 @@ To login-
 ```login localhost username password```
 
 
+To logout-
+```quit```
+
+
 To upload-
 ```upload filename.extension```
 
