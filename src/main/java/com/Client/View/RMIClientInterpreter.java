@@ -102,9 +102,6 @@ public class RMIClientInterpreter implements Runnable {
 							new Credentials(cmdLine.getParameter(1), cmdLine.getParameter(2)));
 					System.out.println("Login Successfull.");
 					break;
-				case USER:
-					server.changeNickname(myIdAtServer, cmdLine.getParameter(0));
-					break;
 				case UPLOAD:
 					if (myIdAtServer != 0) {
 						String srcFilename = cmdLine.getParameter(0);
