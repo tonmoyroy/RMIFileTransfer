@@ -22,6 +22,10 @@ public enum Command {
      */
     UPLOAD,
     /**
+     * IF ALREADY LOGGED IN USER THEN TYPE COMMAND - DOWNLOAD FILENAME 
+     */
+    DOWNLOAD,
+    /**
      * No command was specified. This means the entire command line is interpreted as an entry in
      * the conversation, and is sent to all clients.
      */

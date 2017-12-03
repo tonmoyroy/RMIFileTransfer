@@ -1,20 +1,23 @@
 package com.Server.Controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.Common.Credentials;
 import com.Common.RMIClient;
 import com.Common.RMIServer;
 import com.Server.Model.DatabaseFileUpload;
 import com.Server.Model.ParticipantManager;
+
+import com.Common.RMIInputStream;
+import com.Common.RMIInputStreamImpl;
 
 import com.Common.RMIOutputStream;
 import com.Common.RMIOutputStreamImpl;
@@ -54,6 +57,27 @@ public class ServerController extends UnicastRemoteObject implements RMIServer {
 		if (status) {
 			try {
 				output = new RMIOutputStream(new RMIOutputStreamImpl(new FileOutputStream(f)));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return output;
+	}
+
+	public InputStream getInputStream(File file, long userid) throws RemoteException {
+		InputStream output = null;
+		String filename = file.getName();
+		String filepath = System.getProperty("user.dir");
+
+		DatabaseFileUpload model = new DatabaseFileUpload();
+		boolean status = model.DownloadFile(filename, filepath, userid);
+		if (status) {
+			try {
+				output = new RMIInputStream(new RMIInputStreamImpl(new FileInputStream(file)));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

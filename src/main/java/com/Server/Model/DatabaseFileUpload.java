@@ -29,4 +29,35 @@ public class DatabaseFileUpload {
 			return false;
 		}
 	}
+
+	public boolean DownloadFile(String filename, String filepath, long userid) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connect = DriverManager.getConnection("jdbc:mysql://localhost/jdbc?" + "user=root&password=");
+			statement = connect.createStatement();
+
+			String sql = "SELECT * FROM jdbc.files" + " WHERE userid =" + userid;
+			resultSet = statement.executeQuery(sql);
+			boolean authorized = false;
+			while (resultSet.next()) {
+				double id = resultSet.getDouble(1);
+				String sfilename = resultSet.getString(2);
+				String sfilepath = resultSet.getString(3);
+
+				// Display values
+				System.out.print("Cfilename: " + filename);
+				System.out.print("ID: " + id);
+				System.out.print(", Filename: " + sfilename);
+				System.out.println(", Filepath: " + sfilepath);
+				if(sfilename.equals(filename)) {
+					authorized = true;
+					System.out.print(true);
+				}
+			}
+			return authorized;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

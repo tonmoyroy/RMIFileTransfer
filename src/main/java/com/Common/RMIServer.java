@@ -1,6 +1,7 @@
 package com.Common;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -44,5 +45,7 @@ public interface RMIServer extends Remote {
 	void leaveConversation(long id) throws RemoteException;
 	
 	OutputStream getOutputStream(File file, long userid) throws RemoteException;
+	
+	InputStream getInputStream(File file, long userid) throws RemoteException;
 
 }

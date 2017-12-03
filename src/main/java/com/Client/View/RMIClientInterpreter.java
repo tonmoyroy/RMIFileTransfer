@@ -2,6 +2,7 @@ package com.Client.View;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,6 +51,15 @@ public class RMIClientInterpreter implements Runnable {
 		}
 	}
 
+	public static void download(RMIServer server, File src, long userid) throws IOException {
+		InputStream status = server.getInputStream(src, userid);
+		if (status == null) {
+			System.out.println("Invalid User");
+		} else {
+			copy(status, new FileOutputStream(src));
+		}
+	}
+
 	/**
 	 * Starts the interpreter. The interpreter will be waiting for user input when
 	 * this method returns. Calling <code>start</code> on an interpreter that is
@@ -92,6 +102,15 @@ public class RMIClientInterpreter implements Runnable {
 						if (srcFilename != null && srcFilename.length() > 0) {
 							upload(server, new File(srcFilename), myIdAtServer);
 							System.out.println("Upload Successfull");
+						}
+					}
+					break;
+				case DOWNLOAD:
+					if (myIdAtServer != 0) {
+						String srcFilename = cmdLine.getParameter(0);
+						if (srcFilename != null && srcFilename.length() > 0) {
+							download(server, new File(srcFilename), myIdAtServer);
+							System.out.println("Download Successfull");
 						}
 					}
 					break;
